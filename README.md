@@ -1,50 +1,200 @@
-# Welcome to your Expo app 👋
+# Gemini Medical Record Organizer  
+React Native • Web • Firebase • Gemini AI Backend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform medical record organizer that processes messy, unstructured clinical notes and converts them into structured JSON + Markdown summaries using a secure backend Gemini proxy.
 
-## Get started
+The app supports:
+- Android (EAS Build)
+- iOS (EAS Build)
+- Web (Vercel Hosting)
+- Real-time Firestore storage
+- AI processing routed through backend for safety
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🚀 Features
 
-2. Start the app
+### 🧠 AI-Powered Record Extraction
+Extracts:
+- Patient Name  
+- DOB  
+- Provider  
+- Visit Date  
+- Diagnoses  
+- Medications  
+- Summary  
 
-   ```bash
-   npx expo start
-   ```
+### 📝 Markdown Summary Generator  
+Generates professionally formatted medical summaries.
 
-In the output, you'll find options to open the app in a
+### 🔄 Firestore Integration  
+Realtime sync with Firebase.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+### ✨ Sample Data Generator  
+Generated using backend:
+```
+POST /api/sample-note
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 🔐 Secure Architecture  
+- No API key stored in frontend  
+- Backend holds GEMINI_API_KEY securely  
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## 📁 Project Structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Frontend (Expo)
+```
+gemini-medical-rn/
+  app/
+  components/medical-organizer/
+    DetailModal.tsx
+    InputPanel.tsx
+    RecordCard.tsx
+    RecordsDisplay.tsx
+  constants/
+    firebaseConfig.ts
+    gemini.ts
+    types.ts
+  app.config.js
+  .env
+  package.json
+```
 
-## Join the community
+### Backend (Node + Express)
+```
+gemini-medical-backend/
+  server.js
+  package.json
+  .env
+```
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🔐 Environment Variables
+
+### Frontend .env
+```
+BACKEND_URL=https://gemini-medical-backend-production.up.railway.app
+```
+
+### Backend .env
+```
+PORT=4000
+GEMINI_API_KEY=your_google_gemini_key_here
+```
+
+---
+
+## 🛠 Backend Setup
+
+```bash
+cd gemini-medical-backend
+npm install
+npm start
+```
+
+Backend endpoints:
+```
+POST /api/format-record   → structured JSON response  
+POST /api/sample-note     → messy clinical sample note  
+```
+
+---
+
+## ▶️ Running the App
+
+```bash
+cd gemini-medical-rn
+npm install
+npx expo start
+```
+
+- Press **w** → open web  
+- Scan QR → open mobile  
+
+---
+
+## 🌐 Web Deployment (Vercel)
+
+1. Push repo to GitHub  
+2. Import into Vercel  
+3. Build Command:
+```
+npx expo export --platform web
+```
+4. Output Directory:
+```
+dist
+```
+5. Env Variable:
+```
+BACKEND_URL=your Railway backend URL
+```
+
+Deployment result:
+```
+https://yourproject.vercel.app
+```
+
+---
+
+## 📱 Android Build (EAS)
+
+```bash
+eas login
+eas build --platform android
+```
+
+Produces:
+- APK for direct install  
+- AAB for Play Store  
+
+---
+
+## 🧪 Testing Backend Manually
+
+Generate messy clinical note:
+```bash
+curl -X POST https://gemini-medical-backend-production.up.railway.app/api/sample-note
+```
+
+Format record:
+```bash
+curl -X POST https://gemini-medical-backend-production.up.railway.app/api/format-record 
+  -H "Content-Type: application/json" 
+  -d '{"rawInput":"messy text"}'
+```
+
+---
+
+## 🐞 Troubleshooting
+
+### Expo cannot reach backend:
+```
+Check BACKEND_URL in .env  
+npx expo start --clear  
+```
+
+### Web build failing:
+```
+Ensure BACKEND_URL is configured on Vercel  
+```
+
+### CORS errors:
+Ensure backend includes:
+```js
+app.use(cors());
+```
+
+---
+
+## 📜 License
+MIT License
+
+---
+
+## 👤 Author
+Pujan Bajracharya  
+AI Processing powered by Google Gemini (via backend proxy)
